@@ -1,0 +1,153 @@
+SELECT yearid, SUM(g) AS total_g, SUM(so) AS total_so, ROUND(AVG(so)/AVG(g), 2)
+FROM pitching
+WHERE yearid >= 1920
+GROUP BY yearid
+ORDER BY yearid;
+
+SELECT SUM(g) AS total_g, SUM(so) AS total_so,
+		CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade
+FROM pitching
+WHERE yearid >= 1920
+GROUP BY decade
+ORDER BY decade;
+
+
+SELECT COUNT(g) AS total_g, SUM(so) AS total_so,
+		CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade
+FROM batting
+WHERE yearid >= 1920
+GROUP BY decade
+ORDER BY decade;
+
+SELECT year, SUM(games) AS total_games
+FROM homegames
+WHERE year >= 1920
+GROUP BY year
+ORDER BY year;
+
+-----Total strike out per decade
+SELECT SUM(so) AS total_so,
+		CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade
+FROM batting
+WHERE yearid >= 1920
+GROUP BY decade
+ORDER BY decade;
+
+------------Total games played per decade
+SELECT SUM(games) AS total_games, 
+ 			CASE WHEN year BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN year BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN year BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN year BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN year BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN year BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN year BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN year BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN year BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN year BETWEEN 2011 AND 2016 THEN '2010s' END AS decade
+FROM homegames
+WHERE year >= 1920
+GROUP BY decade
+ORDER BY decade;
+ 
+ 
+SELECT CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade, 
+	 SUM(homegames.games) AS n_games, SUM(so) AS total_so		 
+			 
+FROM batting INNER JOIN homegames ON year = yearid
+WHERE yearid >= 1920
+GROUP BY decade 
+ORDER BY decade;
+
+SELECT 
+		CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade,
+		SUM(g) AS g_year, SUM(so) AS so_year, ((SUM(g::numeric))/SUM(so::numeric)) AS so_game	 
+FROM teams
+WHERE yearid >= 1920
+GROUP BY decade
+ORDER BY decade;
+
+
+--------5a Strike out per game
+
+SELECT CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade,
+			 ROUND(SUM(so::numeric) / SUM(g::numeric), 2)
+FROM teams
+WHERE yearid >=1920
+GROUP BY decade
+ORDER BY decade
+
+-------5b HR per game
+SELECT CASE WHEN yearid BETWEEN 1920 AND 1929 THEN '1920s'
+			 WHEN yearid BETWEEN 1930 AND 1939 THEN '1930s'
+			 WHEN yearid BETWEEN 1940 AND 1949 THEN '1940s' 
+			 WHEN yearid BETWEEN 1950 AND 1959 THEN '1950s'
+			 WHEN yearid BETWEEN 1960 AND 1969 THEN '1960s'
+			 WHEN yearid BETWEEN 1970 AND 1979 THEN '1970s'
+			 WHEN yearid BETWEEN 1980 AND 1989 THEN '1980s'
+			 WHEN yearid BETWEEN 1990 AND 1999 THEN '1990s'
+			 WHEN yearid BETWEEN 2000 AND 2010 THEN '2000s'
+			 WHEN yearid BETWEEN 2011 AND 2016 THEN '2010s' END AS decade,
+			 ROUND(SUM(hr::numeric) / SUM(g::numeric), 2)
+FROM teams
+WHERE yearid >=1920
+GROUP BY decade
+ORDER BY decade
+
+-----5c Do you see any trends
+-----SO go up from 2.8 a game in 1920s to 7.60 in the 2010s (more than doubled)
+-----HR go up from .40 a game in 1920s to .99 in the 2010s (more than doubled)
